@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Namma Kadai</title>
+<style>
+:root{--bg:#f5f7f2;--card:#fff;--ink:#14213d;--mute:#5b6478;--accent:#f2b705;--leaf:#2f6b4f;--line:#dfe4dc;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10162a;--card:#1a2340;--ink:#eef1f8;--mute:#9aa4bd;--leaf:#6fcf9f;--line:#2a3558}}
+:root[data-theme="dark"]{--bg:#10162a;--card:#1a2340;--ink:#eef1f8;--mute:#9aa4bd;--leaf:#6fcf9f;--line:#2a3558}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);z-index:5}
+h1{margin:0;font-size:1.35rem;font-weight:800}
+button{font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.cartbtn{background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:8px 16px;font-weight:700}
+.hero{padding:36px 16px 20px;max-width:760px;margin:auto}
+.hero h2{font-size:clamp(2rem,8vw,3.4rem);line-height:1.05;margin:0 0 12px;font-weight:800;letter-spacing:-.02em}
+.hero p{margin:0;color:var(--mute);max-width:46ch}
+.tags{display:flex;gap:8px;flex-wrap:wrap;padding:12px 16px;max-width:760px;margin:auto}
+.tags button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px}
+.tags button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#14213d;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;padding:8px 16px 40px;max-width:760px;margin:auto}
+.item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:4px}
+.emoji{font-size:2.4rem;line-height:1}
+.item h3{margin:6px 0 0;font-size:1rem}
+.item small{color:var(--mute)}
+.row{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:10px}
+.price{font-weight:800}
+.add{background:var(--leaf);color:#fff;border:0;border-radius:8px;padding:6px 12px;font-weight:700}
+@media(prefers-color-scheme:dark){.add{color:#10162a}}
+aside{position:fixed;inset:0 0 0 auto;width:min(380px,100%);background:var(--card);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .25s;display:flex;flex-direction:column;padding:16px;padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:10}
+aside.open{transform:none}
+@media(prefers-reduced-motion:reduce){aside{transition:none}}
+.lines{flex:1;overflow:auto}
+.line{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.qty button{width:28px;height:28px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:6px}
+.qty span{display:inline-block;min-width:24px;text-align:center}
+.total{display:flex;justify-content:space-between;font-weight:800;font-size:1.1rem;padding:12px 0}
+.order{display:block;text-align:center;background:var(--accent);color:#14213d;font-weight:800;border-radius:10px;padding:12px;text-decoration:none}
+.close{align-self:flex-end;background:none;border:0;color:var(--ink);font-size:1.6rem}
+footer{text-align:center;color:var(--mute);padding:24px 16px 40px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<header><h1>Namma Kadai</h1><button class="cartbtn" id="open">Cart (<span id="count">0</span>)</button></header>
+<section class="hero">
+<h2>Fresh groceries, delivered from your street.</h2>
+<p>Choose what you need, add to cart, and send the order on WhatsApp. We confirm and deliver the same day.</p>
+</section>
+<div class="tags" id="tags"></div>
+<main class="grid" id="grid"><div class="item"><div class="emoji" aria-hidden="true">🌾</div><h3>Ponni rice</h3><small>5 kg</small><div class="row"><span class="price">₹320</span><button class="add" data-id="1">Add</button></div></div><div class="item"><div class="emoji" aria-hidden="true">☕</div><h3>Filter coffee powder</h3><small>250 g</small><div class="row"><span class="price">₹180</span><button class="add" data-id="2">Add</button></div></div><div class="item"><div class="emoji" aria-hidden="true">🥜</div><h3>Groundnut oil</h3><small>1 L</small><div class="row"><span class="price">₹210</span><button class="add" data-id="3">Add</button></div></div><div class="item"><div class="emoji" aria-hidden="true">🟡</div><h3>Turmeric powder</h3><small>100 g</small><div class="row"><span class="price">₹45</span><button class="add" data-id="4">Add</button></div></div><div class="item"><div class="emoji" aria-hidden="true">🍚</div><h3>Idli batter</h3><small>1 kg</small><div class="row"><span class="price">₹60</span><button class="add" data-id="5">Add</button></div></div><div class="item"><div class="emoji" aria-hidden="true">🍌</div><h3>Banana</h3><small>1 dozen</small><div class="row"><span class="price">₹70</span><button class="add" data-id="6">Add</button></div></div><div class="item"><div class="emoji" aria-hidden="true">🍅</div><h3>Tomato</h3><small>1 kg</small><div class="row"><span class="price">₹40</span><button class="add" data-id="7">Add</button></div></div><div class="item"><div class="emoji" aria-hidden="true">🥨</div><h3>Murukku</h3><small>250 g</small><div class="row"><span class="price">₹90</span><button class="add" data-id="8">Add</button></div></div><div class="item"><div class="emoji" aria-hidden="true">🍟</div><h3>Banana chips</h3><small>200 g</small><div class="row"><span class="price">₹80</span><button class="add" data-id="9">Add</button></div></div></main>
+<footer>Trichy · Open 7 AM to 9 PM · Call 98765 43210</footer>
+
+<aside id="cart" aria-label="Cart">
+<button class="close" id="close" aria-label="Close cart">×</button>
+<div class="lines" id="lines"></div>
+<div class="total"><span>Total</span><span id="total">₹0</span></div>
+<a class="order" id="order" href="#" target="_blank" rel="noopener">Order on WhatsApp</a>
+</aside>
+
+<script>
+const PHONE="919876543210"; // replace with your WhatsApp number
+const P=[
+{id:1,n:"Ponni rice",u:"5 kg",p:320,c:"Grocery",e:"🌾"},
+{id:2,n:"Filter coffee powder",u:"250 g",p:180,c:"Grocery",e:"☕"},
+{id:3,n:"Groundnut oil",u:"1 L",p:210,c:"Grocery",e:"🥜"},
+{id:4,n:"Turmeric powder",u:"100 g",p:45,c:"Grocery",e:"🟡"},
+{id:5,n:"Idli batter",u:"1 kg",p:60,c:"Fresh",e:"🍚"},
+{id:6,n:"Banana",u:"1 dozen",p:70,c:"Fresh",e:"🍌"},
+{id:7,n:"Tomato",u:"1 kg",p:40,c:"Fresh",e:"🍅"},
+{id:8,n:"Murukku",u:"250 g",p:90,c:"Snacks",e:"🥨"},
+{id:9,n:"Banana chips",u:"200 g",p:80,c:"Snacks",e:"🍟"}];
+const cart={};let cat="All";
+const $=id=>document.getElementById(id);
+function tags(){const cs=["All",...new Set(P.map(x=>x.c))];$("tags").innerHTML=cs.map(c=>`<button aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join("");}
+function grid(){$("grid").innerHTML=P.filter(x=>cat==="All"||x.c===cat).map(x=>`<div class="item"><div class="emoji" aria-hidden="true">${x.e}</div><h3>${x.n}</h3><small>${x.u}</small><div class="row"><span class="price">₹${x.p}</span><button class="add" data-id="${x.id}">Add</button></div></div>`).join("");}
+function draw(){
+const ids=Object.keys(cart).filter(k=>cart[k]>0);
+let t=0,n=0;
+$("lines").innerHTML=ids.length?ids.map(k=>{const x=P.find(y=>y.id==k);t+=x.p*cart[k];n+=cart[k];return `<div class="line"><div>${x.e} ${x.n}<br><small>₹${x.p} · ${x.u}</small></div><div class="qty"><button data-d="-1" data-id="${k}" aria-label="Remove one">−</button><span>${cart[k]}</span><button data-d="1" data-id="${k}" aria-label="Add one">+</button></div></div>`}).join(""):"<p>Your cart is empty. Add something from the list.</p>";
+$("count").textContent=n;$("total").textContent="₹"+t;
+const msg="Hi Namma Kadai, I want to order:\n"+ids.map(k=>{const x=P.find(y=>y.id==k);return `• ${x.n} (${x.u}) × ${cart[k]}`}).join("\n")+"\nTotal: ₹"+t;
+$("order").href=ids.length?`https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`:"#";
+$("order").style.opacity=ids.length?1:.5;
+}
+$("tags").onclick=e=>{const c=e.target.dataset.c;if(c){cat=c;tags();grid();}};
+function fly(btn){
+if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+const src=btn.closest(".item").querySelector(".emoji"),a=src.getBoundingClientRect(),b=$("open").getBoundingClientRect();
+const g=document.createElement("div");g.textContent=src.textContent;
+g.style.cssText=`position:fixed;left:${a.left}px;top:${a.top}px;font-size:2.4rem;line-height:1;z-index:20;pointer-events:none`;
+document.body.appendChild(g);
+const dx=b.left+b.width/2-a.left-20,dy=b.top+b.height/2-a.top-20;
+g.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:`translate(${dx*.5}px,${dy-60}px) scale(.8)`,opacity:1,offset:.5},{transform:`translate(${dx}px,${dy}px) scale(.2)`,opacity:.4}],{duration:700,easing:"cubic-bezier(.4,0,.6,1)"}).onfinish=()=>{g.remove();$("open").animate([{transform:"scale(1)"},{transform:"scale(1.2)"},{transform:"scale(1)"}],{duration:250});};
+}
+$("grid").onclick=e=>{const id=e.target.dataset.id;if(id){cart[id]=(cart[id]||0)+1;draw();fly(e.target);}};
+$("lines").onclick=e=>{const id=e.target.dataset.id,d=+e.target.dataset.d;if(id){cart[id]=Math.max(0,cart[id]+d);draw();}};
+$("open").onclick=()=>$("cart").classList.add("open");
+$("close").onclick=()=>$("cart").classList.remove("open");
+tags();grid();draw();
+</script>
+</body>
+</html>
